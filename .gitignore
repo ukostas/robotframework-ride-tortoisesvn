@@ -1,0 +1,7 @@
+tmp
+build
+dist
+.idea
+*.pyc
+robotframework_ride_tortoisesvn.egg-info
+*.html
