@@ -36,4 +36,4 @@ from GitHub_. After that you can install the framework with::
 .. _Downloads: https://pypi.python.org/pypi/robotframework-ride-tortoisesvn
 .. _Python: http://python.org
 .. _GitHub: https://github.com/ukostas/robotframework-ride-tortoisesvn
-.. _PyPI: https://pypi.python.org/pypi/robotframework-ride-tortoisesvn
+.. _PyPI: https://pypi.python.org/kostas/robotframework-ride-tortoisesvn
