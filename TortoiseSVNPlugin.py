@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 import wx
@@ -93,15 +92,3 @@ class TortoiseSVNPlugin(Plugin):
                 TestDataDirectoryController)):
             return self.context_menu
         return []
-
-
-if __name__ == '__main__':
-    # if len(sys.argv[1:]) > 0 and sys.argv[1] == "install":
-    # https://github.com/robotframework/RIDE/blob/master/src/robotide/pluginapi/__init__.py#L30
-    import shutil
-
-    plugin_file_dir = os.path.normpath(os.path.expandvars("%APPDATA%/RobotFramework/ride/plugins/"))
-    if not os.path.exists(plugin_file_dir):
-        os.makedirs(plugin_file_dir)
-    shutil.copy(__file__, plugin_file_dir)
-    print "RIDE plugin installed successfully to\n%s" % plugin_file_dir

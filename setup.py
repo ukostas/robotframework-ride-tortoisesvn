@@ -9,8 +9,6 @@ TortoiseSVN plugin for RIDE(robotframework IDE) adds additional menu item
 to trigger TortoiseSVN (it has to be installed separately) commands.
 So that RIDE users can update/commit/etc. directly from RIDE.""".strip()
 
-# set DISTUTILS_DEBUG=1
-# plugin_file_dir = os.path.normpath(os.path.expandvars("%APPDATA%/RobotFramework/ride/plugins/"))
 PLUGIN_FILE = 'TortoiseSVNPlugin.py'
 
 
@@ -27,12 +25,8 @@ def get_version():
 plugin_file_dir_siteplugins = os.path.join(get_python_lib(), 'robotide', 'site-plugins')
 
 setup(
-    name='robotframework_ride_tortoisesvn',
+    name='robotframework-ride-tortoisesvn',
     version=get_version(),
-    # package_dir={'robotide.site-plugins': '.'},
-    # py_modules=['TortoiseSVNPlugin'],
-    # package_data={'robotide.site-plugins': ['TortoiseSVNPlugin.py']},
-    # packages=find_packages(),
     data_files=[(plugin_file_dir_siteplugins, [PLUGIN_FILE])],
     url='https://github.com/ukostas/robotframework-ride-tortoisesvn',
     license=None,
