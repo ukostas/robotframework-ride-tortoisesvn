@@ -13,7 +13,8 @@ class TortoiseSVNPlugin(Plugin):
     """
     MENU_NAME = 'TortoiseSVN'
     SVN_INSTALLATION_URL = 'http://tortoisesvn.net/downloads.html'
-    VERSION = '0.1.0'
+    TORTOISE_PROC_EXE = 'TortoiseProc.exe'
+    VERSION = '0.1.1'
     # plugin metadata
     metadata = {'Version': VERSION,
                 'Author': 'ukostas',
@@ -21,18 +22,21 @@ class TortoiseSVNPlugin(Plugin):
 
     # http://tortoisesvn.net/docs/release/TortoiseSVN_en/tsvn-automation.html
     menu = [
-        {"name": "Check Project for modifications", "action": 'TortoiseProc.exe /command:repostatus /path:"{path}"'},
-        {"name": "Show Project Commit Log", "action": 'TortoiseProc.exe /command:log /path:"{path}"'},
-        {"name": "Project Update", "action": 'TortoiseProc.exe /command:update /path:"{path}"'},
-        {"name": "Project Commit...", "action": 'TortoiseProc.exe /command:commit /path:"{path}"'},
-        {"name": "Project Revert...", "action": 'TortoiseProc.exe /command:revert /path:"{path}"'},
+        {"name": "Check Project for modifications",
+         "action": ('%s /command:repostatus /path:"{path}"' % TORTOISE_PROC_EXE)},
+        {"name": "Show Project Commit Log", "action": ('%s /command:log /path:"{path}"' % TORTOISE_PROC_EXE)},
+        {"name": "Project Update", "action": ('%s /command:update /path:"{path}"' % TORTOISE_PROC_EXE)},
+        {"name": "Project Commit...", "action": ('%s /command:commit /path:"{path}"' % TORTOISE_PROC_EXE)},
+        {"name": "Project Revert...", "action": ('%s /command:revert /path:"{path}"' % TORTOISE_PROC_EXE)},
         {"name": None},
-        {"name": "Item Revert...", "action": 'TortoiseProc.exe /command:revert /path:"{path}"'},
-        {"name": "Item Commit Log", "action": 'TortoiseProc.exe /command:log /path:"{path}"', 'context_menu': True},
-        {"name": "Item Blame", "action": 'TortoiseProc.exe /command:blame /path:"{path}"', 'context_menu': True},
-        {"name": "Item Diff", "action": 'TortoiseProc.exe /command:diff /path:"{path}"', 'context_menu': True},
+        {"name": "Item Revert...", "action": ('%s /command:revert /path:"{path}"' % TORTOISE_PROC_EXE)},
+        {"name": "Item Commit Log", "action": ('%s /command:log /path:"{path}"' % TORTOISE_PROC_EXE),
+         'context_menu': True},
+        {"name": "Item Blame", "action": ('%s /command:blame /path:"{path}"' % TORTOISE_PROC_EXE),
+         'context_menu': True},
+        {"name": "Item Diff", "action": ('%s /command:diff /path:"{path}"' % TORTOISE_PROC_EXE), 'context_menu': True},
         {"name": None},
-        {"name": "About TortoiseSVN", "action": 'TortoiseProc.exe /command:about'},
+        {"name": "About TortoiseSVN", "action": ('%s /command:about' % TORTOISE_PROC_EXE)},
         {"name": "TortoiseSVN Installation", "action": SVN_INSTALLATION_URL}]
 
     def __init__(self, application=None):
@@ -79,7 +83,17 @@ class TortoiseSVNPlugin(Plugin):
             if full_cmd.lower().startswith('http'):
                 wx.LaunchDefaultBrowser(full_cmd)
             else:
-                subprocess.Popen(full_cmd)
+                try:
+                    subprocess.Popen(full_cmd)
+                except OSError as error:
+                    s = "This is error we got trying to execute Tortoise executable file:\n" \
+                        "\"{}\"\n\n" \
+                        "Probably this file in not in your %PATH%. Try to reinstall TortoiseSVN.".format(error.strerror)
+                    dlg = wx.MessageDialog(parent=self.frame, caption="Hmm, something went wrong...", message=s,
+                                           style=wx.YES_NO | wx.CENTER | wx.ICON_INFORMATION)
+                    if dlg.ShowModal() == wx.ID_YES:
+                        wx.LaunchDefaultBrowser(self.SVN_INSTALLATION_URL)
+                    dlg.Destroy()
 
         return callable
 
