@@ -86,9 +86,10 @@ class TortoiseSVNPlugin(Plugin):
                 try:
                     subprocess.Popen(full_cmd)
                 except OSError as error:
-                    s = "This is error we got trying to execute Tortoise executable file:\n" \
-                        "\"{}\"\n\n" \
-                        "Probably this file in not in your %PATH%. Try to reinstall TortoiseSVN.".format(error.strerror)
+                    s = "This is the error we got trying to execute {executor_name} executable file:\n" \
+                        "\"{error}\"\n\n" \
+                        "Probably this file in not in your PATH. Try to reinstall {executor_name}.\n" \
+                        "Do you want to open download page?".format(error=error.strerror, executor_name=self.MENU_NAME)
                     dlg = wx.MessageDialog(parent=self.frame, caption="Hmm, something went wrong...", message=s,
                                            style=wx.YES_NO | wx.CENTER | wx.ICON_INFORMATION)
                     if dlg.ShowModal() == wx.ID_YES:
